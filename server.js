@@ -58,7 +58,24 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(500, {'Content-Type': 'text/plain'});
       res.end('Internal Server Error');
     } 
-  } else if (req.url === '/users' && req.method === 'GET') {
+  }  else if (req.url.startsWith('/user/')) {
+  // get user info using user id
+  const userId = parseInt(req.url.split('/')[2]);
+  const user = blogPosts.find(post => post.id === userId);
+  if (user) {
+    try {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify(user));
+    } catch (error) {
+      console.error('An error occurred:', error);
+      res.writeHead(500, {'Content-Type': 'text/plain'});
+      res.end('Internal Server Error');
+    }
+  } else {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('user not found');
+  }
+} else if (req.url === '/users' && req.method === 'GET') {
     try {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(blogPosts));
@@ -67,7 +84,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(500, {'Content-Type': 'text/plain'});
       res.end('Internal Server Error');
     }
-  }  else if (req.method === 'PUT' && req.url.startsWith('/users/update')) {
+  } else if (req.method === 'PUT' && req.url.startsWith('/users/update')) {
     // using PUT method to update a post
     parseBody(req, res, async () => {
       try {
@@ -106,3 +123,4 @@ const port = 3000;
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
