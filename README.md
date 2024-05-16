@@ -23,3 +23,10 @@ This code sets up a simple HTTP server using Node.js to handle CRUD operations f
    * This endpoint allows clients to retrieve all the blog posts.
 
 ![get all users](/assets/getusers.png)
+
+
+4. GET /users/:id endpoint:
+
+   * This endpoint allows clients to retrieve a single blog post specified by its ID.
+
+![get single user](/assets/getuserbyid.png)
